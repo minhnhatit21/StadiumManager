@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+  <title>403 Forbidden</title>
+  <!-- Include Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+  <!-- Add custom CSS -->
+  <link rel="stylesheet" th:href="@{/css/custom.css}">
+</head>
+<body>
+<div class="text-wrapper">
+  <div class="title" data-content="404">
+    403 - ACCESS DENIED
+  </div>
+
+  <div class="subtitle">
+    Oops, You don't have permission to access this page.
+  </div>
+  <div class="isi">
+    A web server may return a 403 Forbidden HTTP status code in response to a request from a client for a web page or resource to indicate that the server can be reached and understood the request, but refuses to take any further action. Status code 403 responses are the result of the web server being configured to deny access, for some reason, to the requested resource by the client.
+  </div>
+  <div class="buttons">
+    <a class="button" href="/info/admin">Go to homepage</a>
+  </div>
+</div>
+</body>
+</html>
