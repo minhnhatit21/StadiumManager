@@ -1,0 +1,6 @@
+.card {
+    margin: 10px 0; /* Add custom margin for top and bottom spacing */
+}
+.hidden-div {
+    display: none;
+}

@@ -2,53 +2,57 @@ $(document).ready(function() {
     getData();
 });
 function getData() {
-    $('#userTable').DataTable({
-        ajax: '/objects.json',
-        searchPanes: {
-            columns: [5]
-        },
-        columnDefs: [{
+    $.getJSON("/api/stadium/stadiumDetails/", function(returnData) {
+        $('#userTable').DataTable({
+            data: returnData,
             searchPanes: {
-                show: false
+                columns: [5]
             },
-            targets: [5]
-        }],
-        dom: 'Plfrtip',
-        columns: [
-            {data: "stadium"},
-            {data: "type"},
-            {data: "time"},
-            {data: "price"},
-            {data: "status"},
-            {
-                data: null, // Use null for button column since it won't use a specific data property
-                render: function(data, type, row) {
-                    // Render a button with a custom action
-                    return '<button type="button" class="btn btn-dark" onclick="editStadium(' + row.DT_RowId + ')" data-toggle="modal" data-target="#stadiumModal">Edit</button>';
+            columnDefs: [{
+                searchPanes: {
+                    show: false
+                },
+                targets: [5]
+            }],
+            dom: 'Plfrtip',
+            columns: [
+                {data: "stadium.stadiumName"},
+                {data: "stadiumType"},
+                {data: "time"},
+                {data: "price"},
+                {data: "status"},
+                {
+                    data: null, // Use null for button column since it won't use a specific data property
+                    render: function(data, type, row) {
+                        // Render a button with a custom action
+                        return '<button type="button" class="btn btn-dark" onclick="editStadium(' + row.id + ')" data-toggle="modal" data-target="#stadiumModal">Edit</button>';
+                    }
                 }
-            }
-        ]
+            ]
+        });
     });
+
 }
 
-function editStadium(row) {
+function editStadium(rowID) {
     // Make a GET request to the Spring Boot REST endpoint
   $.ajax({
-    url: "/objects.json",
+    url: "/api/stadium/stadiumDetails/",
     type: "GET",
     dataType: "json",
     success: function(response) {
-    var rowID = row.id;
-      $.each(response.data, function(index, s) {
-          if(s.DT_RowId === rowID) {
-              $('#stadiumName').val(s.stadium);
-              $('#stadiumType').val(s.type);
+    console.log("Data:", response)
+      $.each(response, function(index, s) {
+          if(s.id === rowID) {
+              $('#stadiumName').val(s.stadium.stadiumName);
+              $('#stadiumType').val(s.stadiumType);
               $('#stadiumTime').val(s.time);
               $('#stadiumStatus').val(s.status);
               var modal = $("#stadiumModal");
-              if(s.status === "Waiting") {
+              modal.find("#confirmLink").empty();
+              if(s.status === "WAITING") {
 
-                  var button = $('<button type="button" class="btn btn-info" data-toggle="modal" data-target="#userInformationModal">Chờ xác nhận</button>');
+                  var button = $('<button type="button" class="btn btn-info" data-toggle="modal" onclick="showUserInformation(' + s.id + ')" data-target="#userInformationModal">Chờ xác nhận</button>');
                   modal.find("#confirmLink").append(button);
               } else {
                 modal.find("#confirmLink").empty();
@@ -57,4 +61,31 @@ function editStadium(row) {
        });
     }
   });
+}
+
+function showUserInformation(rowID) {
+    $.ajax({
+        url: "/api/stadium/users/" + rowID,
+        type: "GET",
+        dataType: 'json',
+        success: function(response) {
+          $.each(response.data, function(index, s) {
+              console.log(response.data);
+              if(s.id === rowID) {
+                  $('#userName').val(s.stadium.stadiumName);
+                  $('#userPhoneNumber').val(s.stadiumType);
+                  $('#userEmail').val(s.time);
+//                  var modal = $("#userInformationModal");
+//                  modal.find("#confirmLink").empty();
+//                  if(s.status === "WAITING") {
+//
+//                      var button = $('<button type="button" class="btn btn-info" data-toggle="modal" data-target="#userInformationModal">Chờ xác nhận</button>');
+//                      modal.find("#confirmLink").append(button);
+//                  } else {
+//                    modal.find("#confirmLink").empty();
+//                  }
+              }
+           });
+        }
+      });
 }

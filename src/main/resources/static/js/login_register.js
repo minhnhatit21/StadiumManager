@@ -76,7 +76,7 @@ function login() {
           error: function(xhr, status, error) {
             // Login failed, handle the error
             $('#error-modal-body').append("Error: " + xhr.responseText);
-             $("#error-modal").modal("show");
+            $("#error-modal").modal("show");
             console.log("Error: " + xhr.responseText);
           }
         });
