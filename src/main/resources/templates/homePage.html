@@ -1,0 +1,264 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="author" content="Untree.co" />
+  <link rel="shortcut icon" href="favicon.png" />
+
+  <meta name="description" content="" />
+  <meta name="keywords" content="bootstrap, bootstrap5" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <!-- Add Jquery -->
+  <script type="text/javascript" th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+
+  <link
+          href="https://fonts.googleapis.com/css2?family=Work+Sans:wght@400;500;600;700&display=swap"
+          rel="stylesheet"
+  />
+
+<!--  <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css" />-->
+<!--  <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css" />-->
+
+  <link rel="stylesheet" th:href="@{/css/tiny-slider.css}" />
+  <link rel="stylesheet" th:href="@{/css/aos.css}" />
+  <link rel="stylesheet" th:href="@{/css/styleuser.css}" />
+  <script th:src="@{/js/home.js}"></script>
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+
+  <title>
+    Sân Bóng
+  </title>
+</head>
+<body>
+  <div id="user-id" th:text="${userID}" th:class="${hideDiv} ? 'hidden-div' : ''"></div>
+  <!--Site bar For mobile-->
+  <div class="site-mobile-menu site-navbar-target">
+    <div class="site-mobile-menu-header">
+      <div class="site-mobile-menu-close">
+        <span class="icofont-close js-menu-toggle"></span>
+      </div>
+    </div>
+    <div class="site-mobile-menu-body"></div>
+  </div>
+
+  <nav class="site-nav">
+    <div class="container">
+      <div class="menu-bg-wrap">
+        <div class="site-navigation">
+          <a href="index.html" class="logo m-0 float-start">STADIUM MANAGER</a>
+
+          <ul
+                  class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
+          >
+            <li class="active"><a href="#">Home</a></li>
+
+            <li><a th:text="${username}" href="#">Services</a></li>
+            <li th:if="${isLogin}">
+              <a th:href="@{/logout}">Logout</a>
+
+            </li>
+            <li th:unless="${isLogin}">
+              <a th:href="@{/page/login}">Đăng nhập</a>
+            </li>
+          </ul>
+
+          <a
+                  href="#"
+                  class="burger light me-auto float-end mt-1 site-menu-toggle js-menu-toggle d-inline-block d-lg-none"
+                  data-toggle="collapse"
+                  data-target="#main-navbar"
+          >
+            <span></span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </nav>
+
+  <div class="hero">
+    <div class="hero-slide">
+      <div
+              class="img overlay"
+              th:style="'background:url(' + @{/images/hero_bg_3.jpg} + ');'"
+      ></div>
+      <div
+              class="img overlay"
+              th:style="'background:url(' + @{/images/hero_bg_2.jpg} + ');'"
+      ></div>
+      <div
+              class="img overlay"
+              th:style="'background:url(' + @{/images/hero_bg_1.jpg} + ');'"
+      ></div>
+    </div>
+
+    <div class="container">
+      <div class="row justify-content-center align-items-center">
+        <div class="col-lg-9 text-center">
+          <h1 class="heading" data-aos="fade-up">
+            Easiest way to find your want stadidum
+          </h1>
+          <form
+                  action="#"
+                  class="narrow-w form-search d-flex align-items-stretch mb-3"
+                  data-aos="fade-up"
+                  data-aos-delay="200"
+          >
+            <input
+                    type="text"
+                    class="form-control px-4"
+                    placeholder="Enter..."
+            />
+            <button type="submit" class="btn btn-primary">Search</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Card -->
+  <div class="section">
+    <div class="container">
+      <div class="row mb-5 align-items-center">
+        <div class="col-lg-6">
+          <h2 class="font-weight-bold text-primary heading">
+            Popular stadidum
+          </h2>
+        </div>
+        <div class="col-lg-6 text-lg-end">
+          <p>
+            <a
+                    href="#"
+                    target="_blank"
+                    class="btn btn-primary text-white py-3 px-4"
+            >View all Stadium</a
+            >
+          </p>
+        </div>
+      </div>
+      <div class="row" id="card-container">
+
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <!-- Preloader -->
+  <div id="overlayer"></div>
+  <div class="loader">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!--Booking Modal -->
+  <div class="modal fade" id="stadiumModal" tabindex="-1" role="dialog" aria-labelledby="stadiumModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="stadiumModalLabel">Stadium Information</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="container">
+            <div class="row">
+              <!-- Stadium Name -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="stadiumName">Stadium Name</label>
+                  <input type="text" class="form-control" id="stadiumName" placeholder="Enter stadium name" readonly>
+                </div>
+              </div>
+
+              <!-- Stadium Type -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="stadiumType">Stadium Type</label>
+                  <input type="text" class="form-control" id="stadiumType" placeholder="Enter stadium type" readonly>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Time -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="stadiumTime">Time</label>
+                  <input type="text" class="form-control" id="stadiumTime" placeholder="Enter stadium time" readonly>
+                </div>
+              </div>
+
+              <!-- Status -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="stadiumStatus">Status</label>
+                  <select class="form-control" id="stadiumStatus" aria-readonly="true">
+                    <option value="WAITING">Open</option>
+                    <option value="NONE">Closed</option>
+                  </select>
+                </div>
+              </div>
+            </div>
+
+            <div class="row">
+              <!-- Time -->
+              <div class="col-md-6">
+                <div class="form-group">
+                  <label for="dateBooking">Ngày đặt</label>
+                  <input type="date" class="form-control" id="dateBooking" placeholder="Chọn ngày đặt" required>
+                </div>
+              </div>
+            </div>
+            <!-- Confirm Link -->
+            <div class="col-md-6" id="confirmLink">
+
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Đóng</button>
+          <button type="button" id="bookingBtn" class="btn btn-primary">Booking</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!--Modal Alert  -->
+  <div class="modal" id="error-modal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <h4 class="modal-title">Alert</h4>
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+        </div>
+        <!-- Modal body -->
+        <div class="modal-body" id="error-modal-body">
+
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+          <button th:href="@{/page/login}" type="button" class="btn btn-primary">Đăng nhập</button>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+  <script th:src="@{/js/tiny-slider.js}"></script>
+  <script th:src="@{/js/aos.js}"></script>
+  <script th:src="@{/js/navbar.js}"></script>
+  <script th:src="@{/js/counter.js}"></script>
+  <script th:src="@{/js/customuser.js}"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

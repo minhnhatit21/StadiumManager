@@ -174,7 +174,6 @@ function editStadium(rowID) {
 }
 
 function bookingStadium(data) {
-    console.log("Hello: ", data);
     const bookingData = {
         bookingDate: data.bookingDate,
         stadiumID: data.stadiumID,
@@ -187,7 +186,7 @@ function bookingStadium(data) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            console.log("Booking Successfully");
+            alert("Booking Successfully");
         },
         error: function(xhr, status, error) {
             console.error("Error:", error);
