@@ -10,6 +10,7 @@
   <!--Add Data table -->
   <script th:src="@{https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js}"></script>
   <script th:src="@{/js/stadium-manager.js}"></script>
+  <link rel="stylesheet" th:href="@{/css/home.css}">
 </head>
 <body>
 <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
@@ -22,7 +23,7 @@
   <div class="page-wrapper">
     <!--Main-->
     <div class="container-fluid">
-      <table id="userTable" class="display" style="width:100%">
+      <table id="userTable" class="table table-striped table-bordered" style="width:100%">
         <thead>
         <tr>
           <th>Sân</th>
@@ -36,10 +37,6 @@
       </table>
     </div>
 
-    <!-- Button to trigger the modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#stadiumModal">
-      Open Stadium Modal
-    </button>
     <!--Footer-->
     <div th:replace="fragments/footerFragment :: footer"></div>
   </div>
@@ -47,69 +44,68 @@
 </div>
 
 
-  <!--Edit Modal -->
-  <div class="modal fade" id="stadiumModal" tabindex="-1" role="dialog" aria-labelledby="stadiumModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title" id="stadiumModalLabel">Stadium Information</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
-          </button>
-        </div>
-        <div class="modal-body">
-          <div class="container">
-            <div class="row">
-              <!-- Stadium Name -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="stadiumName">Stadium Name</label>
-                  <input type="text" class="form-control" id="stadiumName" placeholder="Enter stadium name">
-                </div>
-              </div>
-
-              <!-- Stadium Type -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="stadiumType">Stadium Type</label>
-                  <input type="text" class="form-control" id="stadiumType" placeholder="Enter stadium type">
-                </div>
+<div class="modal fade" id="stadiumModal" tabindex="-1" role="dialog" aria-labelledby="stadiumModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="stadiumModalLabel">Stadium Information</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="container">
+          <div class="row">
+            <!-- Stadium Name -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="stadiumName">Stadium Name</label>
+                <input type="text" class="form-control" id="stadiumName" placeholder="Enter stadium name">
               </div>
             </div>
 
-            <div class="row">
-              <!-- Time -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="stadiumTime">Time</label>
-                  <input type="text" class="form-control" id="stadiumTime" placeholder="Enter stadium time">
-                </div>
+            <!-- Stadium Type -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="stadiumType">Stadium Type</label>
+                <input type="text" class="form-control" id="stadiumType" placeholder="Enter stadium type">
               </div>
-
-              <!-- Status -->
-              <div class="col-md-6">
-                <div class="form-group">
-                  <label for="stadiumStatus">Status</label>
-                  <select class="form-control" id="stadiumStatus">
-                    <option value="WAITING">Open</option>
-                    <option value="DONE">Closed</option>
-                  </select>
-                </div>
-              </div>
-            </div>
-            <!-- Confirm Link -->
-            <div class="col-md-6" id="confirmLink">
-
             </div>
           </div>
+
+          <div class="row">
+            <!-- Time -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="stadiumTime">Time</label>
+                <input type="text" class="form-control" id="stadiumTime" placeholder="Enter stadium time">
+              </div>
+            </div>
+
+            <!-- Status -->
+            <div class="col-md-6">
+              <div class="form-group">
+                <label for="stadiumStatus">Status</label>
+                <select class="form-control" id="stadiumStatus">
+                  <option value="WAITING">Open</option>
+                  <option value="DONE">Closed</option>
+                </select>
+              </div>
+            </div>
+          </div>
+          <!-- Confirm Link -->
+          <div class="col-md-6" id="confirmLink">
+
+          </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
-        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary">Save changes</button>
       </div>
     </div>
   </div>
+</div>
 
   <!-- User Information Modal -->
   <div class="modal fade" id="userInformationModal" tabindex="-1" role="dialog" aria-labelledby="userInformationModalLabel" aria-hidden="true">
@@ -128,14 +124,14 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="userName">User Name</label>
-                  <input type="text" class="form-control" id="userName" placeholder="Enter your name">
+                  <input type="text" class="form-control" id="userName" placeholder="Enter your name" readonly>
                 </div>
               </div>
               <!-- Phone Number -->
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="userPhoneNumber">Phone Number</label>
-                  <input type="text" class="form-control" id="userPhoneNumber" placeholder="Enter your phone number">
+                  <input type="text" class="form-control" id="userPhoneNumber" placeholder="Enter your phone number" readonly>
                 </div>
               </div>
             </div>
@@ -145,7 +141,7 @@
               <div class="col-md-6">
                 <div class="form-group">
                   <label for="userEmail">Email</label>
-                  <input type="email" class="form-control" id="userEmail" placeholder="Enter user email">
+                  <input type="email" class="form-control" id="userEmail" placeholder="Enter user email" readonly>
                 </div>
               </div>
             </div>
@@ -153,7 +149,7 @@
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Xác nhận</button>
+          <button type="button" onclick="confirmBooking()" class="btn btn-primary">Xác nhận</button>
         </div>
       </div>
     </div>

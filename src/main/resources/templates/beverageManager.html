@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="vn"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+  <div th:replace="fragments/headFragment :: head(pageTitle='Quản lý đồ uống')"></div>
+  <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+  <!-- Add Jquery -->
+  <script type="text/javascript" th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+  <!--Add Data table -->
+  <script th:src="@{https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js}"></script>
+
+  <script th:src="@{/js/beverage-manager.js}"></script>
+  <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+<div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+     data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+  <!--Header-->
+  <div th:replace="fragments/headerFragment :: header"></div>
+  <!--  Aside-->
+  <div th:replace="fragments/asideFragment :: aside"></div>
+
+  <div class="page-wrapper">
+    <!--Main-->
+    <div class="container-fluid">
+      <button type="button" class="btn btn btn-primary" data-toggle="modal" data-target="#beverageAddModal">Add new drink</button>
+      <hr>
+      <table id="beverageTable" class="table table-striped table-bordered" style="width:100%">
+        <thead class="thead-light">
+        <tr>
+          <th>Tên đồ uống</th>
+          <th>Giá</th>
+          <th>Số lượng</th>
+          <th></th>
+        </tr>
+        </thead>
+      </table>
+    </div>
+    <!--Footer-->
+    <div th:replace="fragments/footerFragment :: footer"></div>
+  </div>
+
+</div>
+
+<!--Add Modal -->
+<div class="modal fade" id="beverageAddModal" tabindex="-1" role="dialog" aria-labelledby="stadiumModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="beverageAddModalLabel">Thêm mới thức uống</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="nameBeverage">Tên đồ uống</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="nameBeverage"  placeholder="Nhập tên đồ uống" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="priceBeverage">Đơn giá</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
+              <input type="number" class="form-control" id="priceBeverage" placeholder="Nhập đơn giá" min="0" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="quantityBeverage">Số lượng</label>
+            <div class="input-group">
+              <input min="0" type="number" max="100" class="form-control" id="quantityBeverage" placeholder="Nhập số lượng" required>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="addBeverage()" class="btn btn-primary">Thêm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!--Edit Modal -->
+<div class="modal fade" id="beverageEditModal" tabindex="-1" role="dialog" aria-labelledby="stadiumModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="beverageEditModalLabel">Chỉnh sửa thức uống</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form>
+          <div class="form-group">
+            <label for="indexBeverageForUpdate">Mã đồ uống</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="indexBeverageForUpdate"  placeholder="Nhập tên đồ uống" required readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="nameBeverageForUpdate">Tên đồ uống</label>
+            <div class="input-group">
+              <input type="text" class="form-control" id="nameBeverageForUpdate"  placeholder="Nhập tên đồ uống" required readonly>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="priceBeverageForUpdate">Đơn giá</label>
+            <div class="input-group">
+              <div class="input-group-prepend">
+                <span class="input-group-text">$</span>
+              </div>
+              <input type="number" class="form-control" id="priceBeverageForUpdate" placeholder="Nhập đơn giá" min="1000" required>
+            </div>
+          </div>
+          <div class="form-group">
+            <label for="quantityBeverageForUpdate">Số lượng</label>
+            <div class="input-group">
+              <input min="0" type="number" max="100" class="form-control" id="quantityBeverageForUpdate" placeholder="Nhập số lượng" required>
+            </div>
+
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" onclick="updateBeverage()" class="btn btn-primary">Thêm</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

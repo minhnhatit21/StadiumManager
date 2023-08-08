@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
     public String getAdminInfo() {
-        return "dashboard";
+        return "stadiumManager";
     }
 
 

@@ -4,3 +4,10 @@
 .hidden-div {
     display: none;
 }
+
+table.dataTable tbody tr.myeven {
+      background-color: #f2dede;
+ }
+table.dataTable tbody tr.myodd {
+      background-color: #bce8f1;
+ }

@@ -106,7 +106,7 @@ function checkDate(date, stadiumID) {
 
     return new Promise(function(resolve, reject) {
         $.ajax({
-            url: "/api/stadium/bookingConfirms",
+            url: "/api/stadium/bookingInfo",
             type: "POST",
             data: JSON.stringify(myData),
             dataType: "json",
@@ -166,7 +166,6 @@ function editStadium(rowID) {
                })
                .catch(function(xhr, status, error) {
                    console.error("Error:", error);
-
                });
        });
     }
@@ -179,6 +178,7 @@ function bookingStadium(data) {
         stadiumID: data.stadiumID,
         userID : data.userID
     }
+    console.log("Data booking: ", bookingData);
     $.ajax({
         url: "/api/stadium/booking/",
         type: "PUT",
@@ -186,11 +186,15 @@ function bookingStadium(data) {
         dataType: "json",
         contentType: "application/json; charset=utf-8",
         success: function(response) {
-            alert("Booking Successfully");
+            if(response.data != null) {
+                 alert("Booking Successfully");
+            } else {
+                console.log(response.responseMsg);
+            }
+            location.reload(true);
         },
         error: function(xhr, status, error) {
             console.error("Error:", error);
-            //reject(error); // Reject the promise if there's an error
         }
     });
 }

@@ -4,6 +4,7 @@ import com.minhnhat.Quanlysanbong.models.BookingConfirmation;
 import com.minhnhat.Quanlysanbong.models.Stadium;
 import com.minhnhat.Quanlysanbong.models.StadiumPrice;
 import com.minhnhat.Quanlysanbong.payload.request.BookingRequest;
+import com.minhnhat.Quanlysanbong.payload.response.StadiumDetailsResponse;
 import com.minhnhat.Quanlysanbong.service.BookingConfirmService;
 import com.minhnhat.Quanlysanbong.service.StadiumService;
 import com.minhnhat.Quanlysanbong.service.UserService;
@@ -54,6 +55,12 @@ public class StadiumController {
         return ResponseEntity.ok(stadiumService.getAllStadiumPrice());
     }
 
+    @GetMapping("/stadiumDetailsByCurrentDate")
+    @ResponseBody
+    public ResponseEntity<List<StadiumDetailsResponse>> getStadiumDetailsCurrentDate() {
+        return ResponseEntity.ok(stadiumService.getAllStadiumByCurrentDate());
+    }
+
     @GetMapping("/users/{stadiumID}")
     @ResponseBody
     public ResponseEntity<?> getUserInfo(@PathVariable Long stadiumID) {
@@ -84,11 +91,18 @@ public class StadiumController {
         }
     }
 
-    @PostMapping("/bookingConfirms")
+    @PostMapping("/bookingInfo")
     @ResponseBody
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getBookingInfo(@RequestBody BookingRequest bookingRequest) {
         return ResponseEntity.ok(bookingConfirmService.findBookingDate(bookingRequest));
+    }
+
+    @PutMapping("/bookingConfirmsForUser")
+    @ResponseBody
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public ResponseEntity<?> getBookingInfoWithUser(@RequestBody BookingRequest bookingRequest) {
+        return ResponseEntity.ok(bookingConfirmService.confirmsBookingForUser(bookingRequest));
     }
 
 }
