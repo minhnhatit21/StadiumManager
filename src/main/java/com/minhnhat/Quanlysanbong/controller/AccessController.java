@@ -29,6 +29,9 @@ public class AccessController {
     @GetMapping("/beverageManager")
     public String beverageManagerPage() { return "beverageManager";}
 
+    @GetMapping("/materialFacilities")
+    public String materialFacilitiesPage() { return "materialFacilitiesPage";}
+
     @GetMapping("/home")
     public String homePage(Model model) {
 //        model.addAttribute("title", "Card Title");

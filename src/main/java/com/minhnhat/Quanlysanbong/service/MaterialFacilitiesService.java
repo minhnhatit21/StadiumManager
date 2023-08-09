@@ -20,14 +20,16 @@ public class MaterialFacilitiesService {
         String responseMsg = "";
         ResponseDataModel dataModel = new ResponseDataModel();
         try {
-            if (materialFacilitiesRepository.findMaterialFacilitiesName(materialFacilities.getNameMaterialFacilities()) != null) {
+            if (materialFacilitiesRepository.findMaterialFacilitiesName(materialFacilities.getMaterialName()) != null) {
                 responseMsg = "MaterialFacilities is duplicated";
             } else {
                 MaterialFacilities newMaterialFacilities = new MaterialFacilities();
-                newMaterialFacilities.setNameMaterialFacilities(materialFacilities.getNameMaterialFacilities());
-                newMaterialFacilities.setQuantity(materialFacilities.getQuantity());
-                newMaterialFacilities.setStatusMaterialFacilities(materialFacilities.getStatusMaterialFacilities());
+                newMaterialFacilities.setMaterialName(materialFacilities.getMaterialName());
+                newMaterialFacilities.setMaintenanceSchedule(materialFacilities.getMaintenanceSchedule());
+                newMaterialFacilities.setLastMaintenanceDate(materialFacilities.getLastMaintenanceDate());
+                newMaterialFacilities.setQuantityOnHand(materialFacilities.getQuantityOnHand());
                 responseMsg = "MaterialFacilities is added successfully";
+                materialFacilitiesRepository.saveAndFlush(newMaterialFacilities);
                 dataModel.setData(newMaterialFacilities);
             }
         } catch (Exception e) {
@@ -44,10 +46,11 @@ public class MaterialFacilitiesService {
         try {
             MaterialFacilities exitingMaterialFacilities = materialFacilitiesRepository.findMaterialFacilitiesById(material.getId());
             if (exitingMaterialFacilities == null) {
-                responseMsg = "Can't not find drinks";
+                responseMsg = "Can't not find materials";
             } else {
-                exitingMaterialFacilities.setStatusMaterialFacilities(material.getStatusMaterialFacilities());
-                exitingMaterialFacilities.setQuantity(material.getQuantity());
+                exitingMaterialFacilities.setMaintenanceSchedule(material.getMaintenanceSchedule());
+                exitingMaterialFacilities.setQuantityOnHand(material.getQuantityOnHand());
+                exitingMaterialFacilities.setLastMaintenanceDate(material.getLastMaintenanceDate());
                 materialFacilitiesRepository.saveAndFlush(exitingMaterialFacilities);
                 responseMsg = "MaterialFacilities is update successfully";
                 dataModel.setData(exitingMaterialFacilities);
@@ -59,6 +62,7 @@ public class MaterialFacilitiesService {
         return dataModel;
     }
 
+    @Transactional
     public ResponseDataModel delete(Long materialFacilitiesId) {
         String responseMsg = "";
         ResponseDataModel dataModel = new ResponseDataModel();
@@ -69,6 +73,8 @@ public class MaterialFacilitiesService {
                 materialFacilitiesRepository.flush();
                 responseMsg = "Delete successfully";
                 dataModel.setData(exitingMaterialFacilities);
+            } else {
+                responseMsg = "Can not find material with ID: " + materialFacilitiesId;
             }
         } catch(Exception e) {
             responseMsg = "Error when deleting Material Facilities";
@@ -77,7 +83,7 @@ public class MaterialFacilitiesService {
         return dataModel;
     }
 
-    public ResponseDataModel findBeverageByID(Long materialFacilitiesId) {
+    public ResponseDataModel findMaterialFacilitiesByID(Long materialFacilitiesId) {
 
         String responseMsg = "";
         ResponseDataModel dataModel = new ResponseDataModel();

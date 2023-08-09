@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
+import java.util.Date;
 
 @Data
 @Entity
@@ -17,12 +18,15 @@ public class MaterialFacilities {
     private Long id;
 
     @NotBlank
-    private String nameMaterialFacilities;
+    private String materialName;
 
     @NotNull
-    private Integer quantity;
+    private Integer quantityOnHand;
 
-    @NotBlank
-    private String statusMaterialFacilities;
+    @NotNull
+    private Date maintenanceSchedule;
+
+    @NotNull
+    private Date lastMaintenanceDate;
 
 }
