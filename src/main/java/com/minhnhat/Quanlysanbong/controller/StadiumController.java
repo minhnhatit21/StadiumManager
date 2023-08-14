@@ -55,6 +55,12 @@ public class StadiumController {
         return ResponseEntity.ok(stadiumService.getAllStadiumPrice());
     }
 
+    @PostMapping("/search")
+    @ResponseBody
+    public ResponseEntity<List<StadiumPrice>> searchStadium(@RequestParam String keyword) {
+        return ResponseEntity.ok(stadiumService.searchByKeyword(keyword));
+    }
+
     @GetMapping("/stadiumDetailsByCurrentDate")
     @ResponseBody
     public ResponseEntity<List<StadiumDetailsResponse>> getStadiumDetailsCurrentDate() {

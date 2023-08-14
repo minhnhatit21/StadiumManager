@@ -7,6 +7,67 @@ $(document).ready(function() {
     showCard();
 });
 
+function searchStadium() {
+$.ajax({
+        url: "/api/stadium/search/?keyword=" + $("#search-content").val(),
+        type: "POST",
+        dataType: "json",
+        success: function(response) {
+            //console.log("Data:", response)
+            $('#card-container').empty();
+            if(response != null) {
+                $.each(response, function(index, s) {
+                    var imageUrl = '/images/img_1.jpg';
+                    var cardID = s.id;
+                    var cardTile = s.stadium.stadiumName;
+                    var cardType = s.stadiumType;
+                    var cardTime = s.time
+                    var cardPrice = s.price
+                    var cardDescription = s.stadium.description;
+                    $.ajax({
+                        url: imageUrl,
+                        method: 'GET',
+                        xhrFields: {
+                            responseType: 'blob'
+                        },
+                        success: function(data) {
+                            var imageUrl = URL.createObjectURL(data);
+
+                            var cardHtml = `
+                                         <div class="col-md-3">
+                                            <div id="'card-${cardID}" class="card">
+                                                <img class="card-img-top" src="${imageUrl}" alt="Card Image">
+                                                <div class="card-body">
+                                                    <h4 class="card-title">${cardTile}</h4>
+                                                    <h6 class="card-text">${cardType}</h6>
+                                                    <p class="card-text">
+                                                        <strong>Khung giờ: </strong><span> ${cardTime}</span>
+                                                     </p>
+                                                    <p class="price card-text">
+                                                        <strong>Giá: </strong><span> ${cardPrice} VND </span>
+                                                    </p>
+                                                    <p class="card-text">
+                                                        <strong>Mô tả: </strong><span> ${cardDescription} </span>
+                                                    </p>
+                                                    <button type="button" class="btn btn-dark" onclick="editStadium(${cardID})" data-toggle="modal" data-target="#stadiumModal">Đặt sân</button>
+                                                </div>
+
+                                            </div>
+                                        </div>`;
+
+                            // Append the card to the card-container
+                            $('#card-container').append(cardHtml);
+                        }
+                    });
+                });
+            } else {
+                showCard();
+            }
+
+        }
+    });
+}
+
 function showCard() {
     $.ajax({
         url: "/api/stadium/stadiumDetails/",

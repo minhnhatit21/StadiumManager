@@ -102,19 +102,12 @@
           <h1 class="heading" data-aos="fade-up">
             Easiest way to find your want stadidum
           </h1>
-          <form
-                  action="#"
-                  class="narrow-w form-search d-flex align-items-stretch mb-3"
-                  data-aos="fade-up"
-                  data-aos-delay="200"
-          >
-            <input
+            <input oninput="searchStadium()" id = "search-content"
                     type="text"
                     class="form-control px-4"
                     placeholder="Enter..."
             />
-            <button type="submit" class="btn btn-primary">Search</button>
-          </form>
+            <button onclick="searchStadium()" type="submit" class="btn btn-primary">Search</button>
         </div>
       </div>
     </div>

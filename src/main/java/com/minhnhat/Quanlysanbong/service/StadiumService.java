@@ -50,6 +50,10 @@ public class StadiumService {
         return stadiumPriceRepository.findAllDetails();
     }
 
+    public List<StadiumPrice> searchByKeyword(String keyword) {
+        return stadiumPriceRepository.findAllByKeyword(keyword);
+    }
+
     public List<StadiumDetailsResponse> getAllStadiumByCurrentDate() {
         List<StadiumDetailsResponse> newListStadium = new ArrayList<>();
         try {
