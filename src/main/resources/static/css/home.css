@@ -11,3 +11,7 @@ table.dataTable tbody tr.myeven {
 table.dataTable tbody tr.myodd {
       background-color: #bce8f1;
  }
+
+.error-alert {
+   color: red;
+}

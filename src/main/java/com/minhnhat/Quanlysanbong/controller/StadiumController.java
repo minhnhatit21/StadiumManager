@@ -63,7 +63,7 @@ public class StadiumController {
 
     @GetMapping("/stadiumDetailsByCurrentDate")
     @ResponseBody
-    public ResponseEntity<List<StadiumDetailsResponse>> getStadiumDetailsCurrentDate() {
+    public ResponseEntity<List<StadiumDetailsResponse>> getStadiumDetailsCurrentDate() throws Exception{
         return ResponseEntity.ok(stadiumService.getAllStadiumByCurrentDate());
     }
 
@@ -109,6 +109,13 @@ public class StadiumController {
     @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
     public ResponseEntity<?> getBookingInfoWithUser(@RequestBody BookingRequest bookingRequest) {
         return ResponseEntity.ok(bookingConfirmService.confirmsBookingForUser(bookingRequest));
+    }
+
+    @GetMapping("/users/history/{userID}")
+    @ResponseBody
+    @PreAuthorize("hasRole('USER')")
+    public ResponseEntity<?> getHistoryBooking(@PathVariable(value = "userID") Long userID) {
+        return ResponseEntity.ok(bookingConfirmService.findBookingDateByUser(userID));
     }
 
 }

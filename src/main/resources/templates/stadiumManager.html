@@ -16,7 +16,7 @@
 <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
      data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
   <!--Header-->
-  <div th:replace="fragments/headerFragment :: header"></div>
+  <div th:replace="fragments/headerFragment :: header(userName=${username}, urlLogo=@{/images/logo-text.png})"></div>
   <!--  Aside-->
   <div th:replace="fragments/asideFragment :: aside"></div>
 
@@ -30,7 +30,7 @@
           <th>Loại Sân</th>
           <th>Khung giờ</th>
           <th>Giá</th>
-          <th>Trang Thai</th>
+          <th>Trang Thái Đặt Chỗ</th>
           <th></th>
         </tr>
         </thead>
@@ -48,7 +48,7 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="stadiumModalLabel">Stadium Information</h5>
+        <h5 class="modal-title" id="stadiumModalLabel">Thông tin sân bóng</h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -59,7 +59,7 @@
             <!-- Stadium Name -->
             <div class="col-md-6">
               <div class="form-group">
-                <label for="stadiumName">Stadium Name</label>
+                <label for="stadiumName">Tên sân</label>
                 <input type="text" class="form-control" id="stadiumName" placeholder="Enter stadium name">
               </div>
             </div>
@@ -67,7 +67,7 @@
             <!-- Stadium Type -->
             <div class="col-md-6">
               <div class="form-group">
-                <label for="stadiumType">Stadium Type</label>
+                <label for="stadiumType">Loại sân</label>
                 <input type="text" class="form-control" id="stadiumType" placeholder="Enter stadium type">
               </div>
             </div>
@@ -77,7 +77,7 @@
             <!-- Time -->
             <div class="col-md-6">
               <div class="form-group">
-                <label for="stadiumTime">Time</label>
+                <label for="stadiumTime">Khung giờ</label>
                 <input type="text" class="form-control" id="stadiumTime" placeholder="Enter stadium time">
               </div>
             </div>
@@ -85,10 +85,10 @@
             <!-- Status -->
             <div class="col-md-6">
               <div class="form-group">
-                <label for="stadiumStatus">Status</label>
+                <label for="stadiumStatus">Trạng thái</label>
                 <select class="form-control" id="stadiumStatus">
                   <option value="WAITING">Open</option>
-                  <option value="DONE">Closed</option>
+                  <option value="NONE">Closed</option>
                 </select>
               </div>
             </div>
@@ -112,7 +112,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="userInformationModalLabel">Stadium Information</h5>
+          <h5 class="modal-title" id="userInformationModalLabel">Thông tin người đặt</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -123,14 +123,14 @@
               <!-- User Name -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="userName">User Name</label>
+                  <label for="userName">Tên đăng nhập</label>
                   <input type="text" class="form-control" id="userName" placeholder="Enter your name" readonly>
                 </div>
               </div>
               <!-- Phone Number -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="userPhoneNumber">Phone Number</label>
+                  <label for="userPhoneNumber">Số điện thoại</label>
                   <input type="text" class="form-control" id="userPhoneNumber" placeholder="Enter your phone number" readonly>
                 </div>
               </div>

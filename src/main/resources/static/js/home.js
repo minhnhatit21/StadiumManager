@@ -3,7 +3,7 @@ $(document).ready(function() {
 // Get the user ID from the Thymeleaf model
     var userId = $('#user-id').text();
     localStorage.setItem('userId', userId);
-
+    $('#alert-success').hide();
     showCard();
 });
 
@@ -174,7 +174,6 @@ function checkDate(date, stadiumID) {
             contentType: "application/json; charset=utf-8",
             success: function(response) {
                 console.log("Data:", response.data);
-                console.log("Data length:", response.data.length);
                 if (response.data.length > 0) {
                     responseData = response.data;
                     resolve(response.data); // Resolve the promise with the response data
@@ -200,7 +199,7 @@ function editStadium(rowID) {
     type: "GET",
     dataType: "json",
     success: function(response) {
-    console.log("Data:", response)
+    // console.log("Data:", response)
       $.each(response, function(index, s) {
           if(s.id === rowID) {
               $('#stadiumName').val(s.stadium.stadiumName);
@@ -220,8 +219,11 @@ function editStadium(rowID) {
                .then(function(responseData) {
                    console.log("Trang thai sau khi kiem tra: ", responseData);
                    if (responseData.length > 0) {
-                       alert("Thời gian này sân đã được đặt");
+                        emptyAlert();
+                        $("#alert-error").html("Khung giờ này đã được đặt");
+                        $("#alertModal").modal("show");
                    } else {
+                        emptyAlert();
                        bookingStadium(dataBooking);
                    }
                })
@@ -248,11 +250,14 @@ function bookingStadium(data) {
         contentType: "application/json; charset=utf-8",
         success: function(response) {
             if(response.data != null) {
-                 alert("Booking Successfully");
+                emptyAlert();
+                 $("#alert-content").html(response.responseMsg);
+                 $("#alertModal").modal("show");
             } else {
-                console.log(response.responseMsg);
+                emptyAlert();
+                 $("#error-alert").html(response.responseMsg);
+                $("#alertModal").modal("show");
             }
-            location.reload(true);
         },
         error: function(xhr, status, error) {
             console.error("Error:", error);
@@ -260,8 +265,11 @@ function bookingStadium(data) {
     });
 }
 
-// Function to delete data from localStorage
-function deleteDataFromLocalStorage() {
-  localStorage.removeItem('responseStatus');
-  console.log('Data deleted from localStorage.');
+function hideModal() {
+    $('#alertModal').modal("hide");
+}
+
+function emptyAlert() {
+    $("#alert-content").empty();
+    $("#error-alert").empty();
 }

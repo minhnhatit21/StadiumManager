@@ -1,5 +1,6 @@
 package com.minhnhat.Quanlysanbong.controller;
 
+import com.minhnhat.Quanlysanbong.model.ResponseDataModel;
 import com.minhnhat.Quanlysanbong.models.Stadium;
 import com.minhnhat.Quanlysanbong.models.User;
 import com.minhnhat.Quanlysanbong.service.UserService;
@@ -38,8 +39,26 @@ public class UserController {
 
     @GetMapping("/admin")
     @PreAuthorize("hasRole('ADMIN')")
-    public String getAdminInfo() {
+    public String getAdminInfo(Model model, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        User exitingUser = userService.getUserID(username);
+        model.addAttribute("username", userDetails.getUsername());
+        model.addAttribute("userID", exitingUser.getId());
+        model.addAttribute("isLogin", true);
         return "stadiumManager";
+    }
+
+    @GetMapping("/history")
+    @PreAuthorize("hasRole('USER') or hasRole('ADMIN')")
+    public String historyBookingPage(Model model, Authentication authentication) {
+        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        String username = userDetails.getUsername();
+        User exitingUser = userService.getUserID(username);
+        model.addAttribute("username", userDetails.getUsername());
+        model.addAttribute("userID", exitingUser.getId());
+        model.addAttribute("isLogin", true);
+        return "history-booking-page";
     }
 
 

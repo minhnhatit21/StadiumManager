@@ -44,6 +44,28 @@ public class BookingConfirmService {
         return responseDataModel;
 
     }
+
+    public ResponseDataModel findBookingDateByUser(Long userID) {
+        ResponseDataModel responseDataModel = new ResponseDataModel();
+        String responseMsg = "";
+        try {
+            List<BookingConfirmation> exitingBooking =
+                   bookingConfirmRepository.findBookingByUserID(userID);
+            if(exitingBooking != null) {
+                responseMsg = "Get Data Successfully";
+                responseDataModel.setData(exitingBooking);
+            } else {
+                responseMsg = "Not Exiting";
+                responseDataModel.setData(null);
+            }
+        } catch (Exception e) {
+            responseMsg = "Has Error:" + e;
+        }
+        responseDataModel.setResponseMsg(responseMsg);
+        return responseDataModel;
+
+    }
+
     @Transactional
             (rollbackFor = Exception.class, noRollbackFor = EntityNotFoundException.class)
     public ResponseDataModel confirmsBookingForUser(BookingRequest bookingRequest) {

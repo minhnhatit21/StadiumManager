@@ -18,4 +18,12 @@ public class StadiumDetailsResponse {
 
     @Enumerated(EnumType.STRING)
     private EStatus stadiumStatus;
+
+    public StadiumDetailsResponse(Long id, String stadiumName, String stadiumType, String stadiumTimeBlock, Long stadiumPrice) {
+        this.id = id;
+        this.stadiumName = stadiumName;
+        this.stadiumType = stadiumType;
+        this.stadiumTimeBlock = stadiumTimeBlock;
+        this.stadiumPrice = stadiumPrice;
+    }
 }

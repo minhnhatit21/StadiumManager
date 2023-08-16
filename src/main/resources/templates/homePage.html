@@ -23,7 +23,7 @@
 
 <!--  <link rel="stylesheet" th:href="@{/fonts/icomoon/style.css" />-->
 <!--  <link rel="stylesheet" th:href="@{/fonts/flaticon/font/flaticon.css" />-->
-
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
   <link rel="stylesheet" th:href="@{/css/tiny-slider.css}" />
   <link rel="stylesheet" th:href="@{/css/aos.css}" />
   <link rel="stylesheet" th:href="@{/css/styleuser.css}" />
@@ -35,7 +35,8 @@
   </title>
 </head>
 <body>
-  <div id="user-id" th:text="${userID}" th:class="${hideDiv} ? 'hidden-div' : ''"></div>
+
+  <div id="user-id" th:text="${userID}" class="hidden-div"></div>
   <!--Site bar For mobile-->
   <div class="site-mobile-menu site-navbar-target">
     <div class="site-mobile-menu-header">
@@ -50,12 +51,16 @@
     <div class="container">
       <div class="menu-bg-wrap">
         <div class="site-navigation">
-          <a href="index.html" class="logo m-0 float-start">STADIUM MANAGER</a>
+          <a href="index.html" class="logo m-0 float-start">Quản lý sân bóng</a>
 
           <ul
                   class="js-clone-nav d-none d-lg-inline-block text-start site-menu float-end"
           >
             <li class="active"><a href="#">Home</a></li>
+
+            <li th:if="${isLogin}">
+              <a th:href="@{/info/history}">Lịch sử</a>
+            </li>
 
             <li><a th:text="${username}" href="#">Services</a></li>
             <li th:if="${isLogin}">
@@ -98,13 +103,13 @@
 
     <div class="container">
       <div class="row justify-content-center align-items-center">
-        <div class="col-lg-9 text-center">
+        <div class="col-lg-7 text-center">
           <h1 class="heading" data-aos="fade-up">
-            Easiest way to find your want stadidum
+            Tìm kiếm sân mà bạn muốn
           </h1>
             <input oninput="searchStadium()" id = "search-content"
                     type="text"
-                    class="form-control px-4"
+                    class="form-control px-6"
                     placeholder="Enter..."
             />
             <button onclick="searchStadium()" type="submit" class="btn btn-primary">Search</button>
@@ -140,7 +145,6 @@
     </div>
   </div>
 
-
   <!-- Preloader -->
   <div id="overlayer"></div>
   <div class="loader">
@@ -154,7 +158,7 @@
     <div class="modal-dialog" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title" id="stadiumModalLabel">Stadium Information</h5>
+          <h5 class="modal-title" id="stadiumModalLabel">Thông tin sân</h5>
           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -165,7 +169,7 @@
               <!-- Stadium Name -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="stadiumName">Stadium Name</label>
+                  <label for="stadiumName">Tên sân</label>
                   <input type="text" class="form-control" id="stadiumName" placeholder="Enter stadium name" readonly>
                 </div>
               </div>
@@ -173,7 +177,7 @@
               <!-- Stadium Type -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="stadiumType">Stadium Type</label>
+                  <label for="stadiumType">Loại sân</label>
                   <input type="text" class="form-control" id="stadiumType" placeholder="Enter stadium type" readonly>
                 </div>
               </div>
@@ -183,7 +187,7 @@
               <!-- Time -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="stadiumTime">Time</label>
+                  <label for="stadiumTime">Khung giờ</label>
                   <input type="text" class="form-control" id="stadiumTime" placeholder="Enter stadium time" readonly>
                 </div>
               </div>
@@ -191,7 +195,7 @@
               <!-- Status -->
               <div class="col-md-6">
                 <div class="form-group">
-                  <label for="stadiumStatus">Status</label>
+                  <label for="stadiumStatus">Trạng thái</label>
                   <select class="form-control" id="stadiumStatus" aria-readonly="true">
                     <option value="WAITING">Open</option>
                     <option value="NONE">Closed</option>
@@ -223,25 +227,23 @@
     </div>
   </div>
 
-  <!--Modal Alert  -->
-  <div class="modal" id="error-modal" tabindex="-1" role="dialog" >
+  <!-- Modal -->
+  <div class="modal fade" id="alertModal" role="dialog" aria-labelledby="alertModalLabel" aria-hidden="true">
     <div class="modal-dialog">
+      <!-- Modal content-->
       <div class="modal-content">
-        <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title">Alert</h4>
-          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">Thông báo</h4>
+          <button onclick="hideModal()" type="button">&times;</span>
+          </button>
         </div>
-        <!-- Modal body -->
-        <div class="modal-body" id="error-modal-body">
-
+        <div class="modal-body">
+          <h5 id="alert-content"></h5>
+          <h5 id="alert-error" class="error-alert"></h5>
         </div>
-        <!-- Modal footer -->
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button th:href="@{/page/login}" type="button" class="btn btn-primary">Đăng nhập</button>
+          <button onclick="hideModal()" type="button" class="btn btn-primary">Đóng</button>
         </div>
-
       </div>
     </div>
   </div>
@@ -254,5 +256,7 @@
   <script th:src="@{/js/customuser.js}"></script>
   <script th:src="@{/js/date-home-custom.js}"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+  <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 </body>
 </html>

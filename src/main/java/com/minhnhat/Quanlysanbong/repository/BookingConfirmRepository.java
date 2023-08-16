@@ -15,6 +15,9 @@ public interface BookingConfirmRepository extends JpaRepository<BookingConfirmat
     @Query("SELECT b FROM BookingConfirmation b WHERE b.stadiumPrice.id = :stadiumID")
     List<BookingConfirmation> findBookingByStadiumID(Long stadiumID);
 
+    @Query(value = "SELECT b FROM BookingConfirmation b WHERE b.user.id = :userID")
+    List<BookingConfirmation> findBookingByUserID(Long userID);
+
     @Query("SELECT b FROM BookingConfirmation b WHERE b.user.id = ?1 and b.stadiumPrice.id = ?2")
     BookingConfirmation findBookingByUserIDAndStadiumID(Long userID, Long stadiumID);
 

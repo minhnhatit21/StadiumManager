@@ -65,6 +65,7 @@ function editStadium(rowID) {
               $('#stadiumType').val(s.stadiumType);
               $('#stadiumTime').val(s.stadiumTimeBlock);
               $('#stadiumStatus').val(s.stadiumStatus);
+              console.log("Status ", s.stadiumStatus)
               var modal = $("#stadiumModal");
               modal.find("#confirmLink").empty();
               if(s.stadiumStatus === "WAITING") {

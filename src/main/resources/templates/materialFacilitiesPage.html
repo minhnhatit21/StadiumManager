@@ -20,7 +20,7 @@
 <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
      data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
     <!--Header-->
-    <div th:replace="fragments/headerFragment :: header"></div>
+    <div th:replace="fragments/headerFragment :: header(userName=${username}, urlLogo=@{/images/logo-text.png})"></div>
     <!--  Aside-->
     <div th:replace="fragments/asideFragment :: aside"></div>
 

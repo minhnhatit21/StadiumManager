@@ -54,25 +54,18 @@ public class StadiumService {
         return stadiumPriceRepository.findAllByKeyword(keyword);
     }
 
-    public List<StadiumDetailsResponse> getAllStadiumByCurrentDate() {
+    public List<StadiumDetailsResponse> getAllStadiumByCurrentDate() throws Exception{
         List<StadiumDetailsResponse> newListStadium = new ArrayList<>();
         try {
             List<StadiumPrice> exitingStadium = stadiumPriceRepository.findAllDetails();
-
-            // Get the current LocalDate
             LocalDate localDate = LocalDate.now();
             // Convert LocalDate to Date
             Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
 
-
             for (StadiumPrice stadium : exitingStadium) {
+                StadiumDetailsResponse stadiumDetailsResponse = new
+                        StadiumDetailsResponse(stadium.getId(),stadium.getStadiumType(),stadium.getStadium().getStadiumName(), stadium.getTime(), stadium.getPrice());
                 BookingConfirmation bookingConfirmation = bookingConfirmRepository.findBookingByDateBookingAndStadiumID(date, stadium.getId());
-                StadiumDetailsResponse stadiumDetailsResponse = new StadiumDetailsResponse();
-                stadiumDetailsResponse.setId(stadium.getId());
-                stadiumDetailsResponse.setStadiumType(stadium.getStadiumType());
-                stadiumDetailsResponse.setStadiumName(stadium.getStadium().getStadiumName());
-                stadiumDetailsResponse.setStadiumTimeBlock(stadium.getTime());
-                stadiumDetailsResponse.setStadiumPrice(stadium.getPrice());
                 if(bookingConfirmation != null) {
                     stadiumDetailsResponse.setUserID(bookingConfirmation.getUser().getId());
                     stadiumDetailsResponse.setStadiumStatus(bookingConfirmation.getEStatus());
@@ -82,7 +75,7 @@ public class StadiumService {
                 newListStadium.add(stadiumDetailsResponse);
             }
         } catch (Exception e) {
-
+            System.out.println("Exception: " + e);
         }
         return newListStadium;
     }
@@ -93,19 +86,15 @@ public class StadiumService {
         ResponseDataModel responseDataModel = new ResponseDataModel();
         String responseMsg = "";
         BookingConfirmation bookingConfirmation = new BookingConfirmation();
-        // Get the current LocalDate
-        LocalDate localDate = LocalDate.now();
-        // Convert LocalDate to Date
-        Date date = Date.from(localDate.atStartOfDay(ZoneId.systemDefault()).toInstant());
         try {
             StadiumPrice stadiumPrice = stadiumPriceRepository.findStadiumById(bookingRequest.getStadiumID());
             Optional<User> user = userRepository.findById(bookingRequest.getUserID());
             if(stadiumPrice == null) {
                 responseMsg = "Can't find stadium";
             } else {
-                BookingConfirmation exitingBookingConfirmation = bookingConfirmRepository.findBookingByDateBookingAndStadiumAndUserID(date, stadiumPrice.getId(), user.get().getId());
+                BookingConfirmation exitingBookingConfirmation = bookingConfirmRepository.findBookingByDateBookingAndStadiumAndUserID(bookingRequest.getBookingDate(), stadiumPrice.getId(), user.get().getId());
                 if(exitingBookingConfirmation != null) {
-                    responseMsg = "Exiting booking confirms";
+                    responseMsg = "Exiting booking";
                 } else {
                     bookingConfirmation.setBookingDate(bookingRequest.getBookingDate());
                     bookingConfirmation.setStadiumPrice(stadiumPrice);
