@@ -1,5 +1,4 @@
-
-$(document).ready(function() {
+$(document).ready(function () {
 // Get the user ID from the Thymeleaf model
     var userId = $('#user-id').text();
     localStorage.setItem('userId', userId);
@@ -12,9 +11,9 @@ function showCard() {
         url: "/api/stadium/stadiumDetails/",
         type: "GET",
         dataType: "json",
-        success: function(response) {
+        success: function (response) {
             console.log("Data:", response)
-            $.each(response, function(index, s) {
+            $.each(response, function (index, s) {
                 var imageUrl = '/images/img_1.jpg';
                 var cardID = s.id;
                 var cardTile = s.stadium.stadiumName;
@@ -28,7 +27,7 @@ function showCard() {
                     xhrFields: {
                         responseType: 'blob'
                     },
-                    success: function(data) {
+                    success: function (data) {
                         var imageUrl = URL.createObjectURL(data);
 
                         var cardHtml = `
@@ -47,7 +46,7 @@ function showCard() {
                                                 <p class="card-text">
                                                     <strong>Mô tả: </strong><span> ${cardDescription} </span>
                                                 </p>
-                                                <button type="button" class="btn btn-dark" onclick="editStadium(${cardID})" data-toggle="modal" data-target="#stadiumModal">Đặt sân</button>
+                                                <button type="button"  class="btn btn-primary"  onclick="editStadium(${cardID})" data-toggle="modal" data-target="#stadiumModal">Đặt sân</button>
                                             </div>
 
                                         </div>
@@ -62,8 +61,9 @@ function showCard() {
     });
 
 }
+
 function getData() {
-    $.getJSON("/api/stadium/stadiumDetails/", function(returnData) {
+    $.getJSON("/api/stadium/stadiumDetails/", function (returnData) {
         $('#userTable').DataTable({
             data: returnData,
             searchPanes: {
@@ -84,9 +84,9 @@ function getData() {
                 {data: "status"},
                 {
                     data: null, // Use null for button column since it won't use a specific data property
-                    render: function(data, type, row) {
+                    render: function (data, type, row) {
                         // Render a button with a custom action
-                        return '<button type="button" class="btn btn-dark" onclick="editStadium(' + row.id + ')" data-toggle="modal" data-target="#stadiumModal">Edit</button>';
+                        return '<button type="button" class="btn btn-primary" onclick="editStadium(' + row.id + ')" data-toggle="modal" data-target="#stadiumModal">Edit</button>';
                     }
                 }
             ]
@@ -104,14 +104,14 @@ function checkDate(date, stadiumID) {
         stadiumID: stadiumID
     };
 
-    return new Promise(function(resolve, reject) {
+    return new Promise(function (resolve, reject) {
         $.ajax({
             url: "/api/stadium/bookingInfo",
             type: "POST",
             data: JSON.stringify(myData),
             dataType: "json",
             contentType: "application/json; charset=utf-8",
-            success: function(response) {
+            success: function (response) {
                 console.log("Data:", response.data);
                 console.log("Data length:", response.data.length);
                 if (response.data.length > 0) {
@@ -123,60 +123,62 @@ function checkDate(date, stadiumID) {
                     resolve([]); // Resolve with an empty array if no data found
                 }
             },
-            error: function(xhr, status, error) {
-               console.error("Error:", error);
-                  if (xhr.status === 401) {
-                       window.location.replace("/error");
-                  }
+            error: function (xhr, status, error) {
+                console.error("Error:", error);
+                if (xhr.status === 401) {
+                    window.location.replace("/error");
+                }
             }
         });
     });
 }
+
 function editStadium(rowID) {
 // $("#stadiumModal").modal('show');
-  $.ajax({
-    url: "/api/stadium/stadiumDetails/",
-    type: "GET",
-    dataType: "json",
-    success: function(response) {
-    console.log("Data:", response)
-      $.each(response, function(index, s) {
-          if(s.id === rowID) {
-              $('#stadiumName').val(s.stadium.stadiumName);
-              $('#stadiumType').val(s.stadiumType);
-              $('#stadiumTime').val(s.time);
-              $('#stadiumStatus').val(s.status);
-              stadiumID = s.id;
-          }
-       });
-       $("#bookingBtn").on("click", function() {
-           var dataBooking = {};
-           dataBooking.bookingDate = $("#dateBooking").val();
-           dataBooking.stadiumID = rowID;
-           dataBooking.userID = localStorage.getItem('userId');;
+    $.ajax({
+        url: "/api/stadium/stadiumDetails/",
+        type: "GET",
+        dataType: "json",
+        success: function (response) {
+            console.log("Data:", response)
+            $.each(response, function (index, s) {
+                if (s.id === rowID) {
+                    $('#stadiumName').val(s.stadium.stadiumName);
+                    $('#stadiumType').val(s.stadiumType);
+                    $('#stadiumTime').val(s.time);
+                    $('#stadiumStatus').val(s.status);
+                    stadiumID = s.id;
+                }
+            });
+            $("#bookingBtn").on("click", function () {
+                var dataBooking = {};
+                dataBooking.bookingDate = $("#dateBooking").val();
+                dataBooking.stadiumID = rowID;
+                dataBooking.userID = localStorage.getItem('userId');
+                ;
 
-           checkDate(dataBooking.bookingDate, rowID)
-               .then(function(responseData) {
-                   console.log("Trang thai sau khi kiem tra: ", responseData);
-                   if (responseData.length > 0) {
-                       alert("Thời gian này sân đã được đặt");
-                   } else {
-                       bookingStadium(dataBooking);
-                   }
-               })
-               .catch(function(xhr, status, error) {
-                   console.error("Error:", error);
-               });
-       });
-    }
-  });
+                checkDate(dataBooking.bookingDate, rowID)
+                    .then(function (responseData) {
+                        console.log("Trang thai sau khi kiem tra: ", responseData);
+                        if (responseData.length > 0) {
+                            alert("Thời gian này sân đã được đặt");
+                        } else {
+                            bookingStadium(dataBooking);
+                        }
+                    })
+                    .catch(function (xhr, status, error) {
+                        console.error("Error:", error);
+                    });
+            });
+        }
+    });
 }
 
 function bookingStadium(data) {
     const bookingData = {
         bookingDate: data.bookingDate,
         stadiumID: data.stadiumID,
-        userID : data.userID
+        userID: data.userID
     }
     console.log("Data booking: ", bookingData);
     $.ajax({
@@ -185,15 +187,15 @@ function bookingStadium(data) {
         data: JSON.stringify(bookingData),
         dataType: "json",
         contentType: "application/json; charset=utf-8",
-        success: function(response) {
-            if(response.data != null) {
-                 alert("Booking Successfully");
+        success: function (response) {
+            if (response.data != null) {
+                alert("Booking Successfully");
             } else {
                 console.log(response.responseMsg);
             }
             location.reload(true);
         },
-        error: function(xhr, status, error) {
+        error: function (xhr, status, error) {
             console.error("Error:", error);
         }
     });
@@ -201,6 +203,6 @@ function bookingStadium(data) {
 
 // Function to delete data from localStorage
 function deleteDataFromLocalStorage() {
-  localStorage.removeItem('responseStatus');
-  console.log('Data deleted from localStorage.');
+    localStorage.removeItem('responseStatus');
+    console.log('Data deleted from localStorage.');
 }

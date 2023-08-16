@@ -31,7 +31,7 @@ function getData() {
                     data: null, // Use null for button column since it won't use a specific data property
                     render: function(data, type, row) {
                         // Render a button with a custom action
-                        return '<button type="button" class="btn btn-dark" onclick="editStadium(' + row.id + ')" data-toggle="modal" data-target="#stadiumModal">View</button>';
+                        return '<button type="button" class="btn btn-primary" onclick="editStadium(' + row.id + ')" data-toggle="modal" data-target="#stadiumModal">View</button>';
                     }
                 }
             ],
