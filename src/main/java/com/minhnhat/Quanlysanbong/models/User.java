@@ -1,5 +1,6 @@
 package com.minhnhat.Quanlysanbong.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -36,5 +37,7 @@ public class User {
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Authority> roles = new HashSet<>();
 
-
+    @OneToMany(mappedBy = "user")
+    @JsonIgnore
+    private List<BookingConfirmation> bookingConfirmation;
 }

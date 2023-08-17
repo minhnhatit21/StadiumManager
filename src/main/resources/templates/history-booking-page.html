@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
+<head>
+    <div th:replace="fragments/headFragment :: head(pageTitle='Lịch sử đặt sân')"></div>
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+    <!-- Add Jquery -->
+    <script type="text/javascript" th:src="@{https://code.jquery.com/jquery-3.6.0.min.js}"></script>
+    <!--Add Data table -->
+    <script th:src="@{https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js}"></script>
+    <script th:src="@{/js/history-booking.js}"></script>
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+</head>
+<body>
+    <div id="user-id" th:text="${userID}" class="hidden-div"></div>
+    <div id="main-wrapper" data-layout="vertical" data-navbarbg="skin5" data-sidebartype="full"
+         data-sidebar-position="absolute" data-header-position="absolute" data-boxed-layout="full">
+        <!--Header-->
+        <div th:replace="fragments/headerFragment :: header(userName=${username}, urlDirect=@{/info/user}, urlLogo=@{/images/user-logo-stadium-text.png})"></div>
+    <!--  Aside-->
+    <aside class="left-sidebar" data-sidebarbg="skin6">
+    <!-- Sidebar scroll-->
+        <div class="scroll-sidebar">
+            <!-- Sidebar navigation-->
+            <nav class="sidebar-nav">
+                <ul id="sidebarnav">
+                    <!-- User Profile-->
+                    <li class="sidebar-item pt-2">
+                        <a class="sidebar-link waves-effect waves-dark sidebar-link" href="#"
+                           aria-expanded="false">
+                            <i class="far fa-clock" aria-hidden="true"></i>
+                            <span class="hide-menu">Dashboard</span>
+                        </a>
+                    </li>
+                    <li class="text-center p-20 upgrade-btn">
+                        <a href="#"
+                           class="btn d-grid btn-danger text-white" target="_blank">
+                            Dịch vụ</a>
+                    </li>
+                </ul>
+
+            </nav>
+            <!-- End Sidebar navigation -->
+        </div>
+        <!-- End Sidebar scroll-->
+        </aside>
+
+        <div class="page-wrapper">
+            <!--Main-->
+            <div class="container-fluid">
+                <table id="userTable" class="table table-striped table-bordered" style="width:100%">
+                    <thead>
+                    <tr>
+                        <th>Sân</th>
+                        <th>Loại Sân</th>
+                        <th>Khung giờ</th>
+                        <th>Giá</th>
+                        <th>Trang Thái Đặt Chỗ</th>
+                        <th>Ngày đặt</th>
+                    </tr>
+                    </thead>
+                </table>
+            </div>
+
+            <!--Footer-->
+            <div th:replace="fragments/footerFragment :: footer"></div>
+        </div>
+
+    </div>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>
+</body>
+</html>

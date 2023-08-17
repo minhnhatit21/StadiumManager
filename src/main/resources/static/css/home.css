@@ -1,0 +1,17 @@
+.card {
+    margin: 10px 0; /* Add custom margin for top and bottom spacing */
+}
+.hidden-div {
+    display: none;
+}
+
+table.dataTable tbody tr.myeven {
+      background-color: #f2dede;
+ }
+table.dataTable tbody tr.myodd {
+      background-color: #bce8f1;
+ }
+
+.error-alert {
+   color: red;
+}

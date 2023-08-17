@@ -13,17 +13,17 @@
       <!-- ============================================================== -->
       <!-- Logo -->
       <!-- ============================================================== -->
-      <a class="navbar-brand" th:href="@{/page/dashboard}">
+      <a class="navbar-brand" th:href="${urlDirect}">
         <!-- Logo icon -->
         <b class="logo-icon">
           <!-- Dark Logo icon -->
-          <img th:src="@{/images/logo-icon.png}" alt="homepage" />
+          <img th:src="@{/images/soccer-ball-variant.png}" alt="homepage" />
         </b>
         <!--End Logo icon -->
         <!-- Logo text -->
         <span class="logo-text">
                             <!-- dark Logo text -->
-                            <img th:src="@{/images/logo-text.png}" alt="homepage" />
+                            <img th:src="${urlLogo}" alt="homepage" />
                         </span>
       </a>
       <!-- ============================================================== -->
@@ -48,21 +48,24 @@
         <!-- ============================================================== -->
         <!-- Search -->
         <!-- ============================================================== -->
-        <li class=" in">
-          <form role="search" class="app-search d-none d-md-block me-3">
-            <input type="text" placeholder="Search..." class="form-control mt-0">
-            <a href="" class="active">
-              <i class="fa fa-search"></i>
-            </a>
-          </form>
-        </li>
+<!--        <li class=" in">-->
+<!--          <form role="search" class="app-search d-none d-md-block me-3">-->
+<!--            <input type="text" placeholder="Search..." class="form-control mt-0">-->
+<!--            <a href="" class="active">-->
+<!--              <i class="fa fa-search"></i>-->
+<!--            </a>-->
+<!--          </form>-->
+<!--        </li>-->
         <!-- ============================================================== -->
         <!-- User profile and search -->
         <!-- ============================================================== -->
         <li>
           <a class="profile-pic" href="#">
-            <img th:src="@{/images/users/varun.jpg}" alt="user-img" width="36"
-                 class="img-circle"><span class="text-white font-medium">Steave</span></a>
+            <img th:src="@{/images/users/d3.jpg}" alt="user-img" width="36"
+                 class="img-circle"><span th:text="${userName}" class="text-white font-medium">Steave</span></a>
+        </li>
+        <li th:if="${isLogin}">
+          <a class="link-secondary" th:href="@{/logout}">Logout</a>
         </li>
         <!-- ============================================================== -->
         <!-- User profile and search -->
